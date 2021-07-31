@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/repo_storyboard"
+    app:startDestination="@id/repoListFragment">
+
+    <fragment
+        android:id="@+id/repoListFragment"
+        android:name="com.vj.mvvm_retrofitpaginghilt.view.RepoListFragment"
+        android:label="fragment_repo_list"
+        tools:layout="@layout/fragment_repo_list" >
+        <action
+            android:id="@+id/action_repoListFragment_to_repoDetailsFragment"
+            app:destination="@id/repoDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/repoDetailsFragment"
+        android:name="com.vj.mvvm_retrofitpaginghilt.view.RepoDetailsFragment"
+        android:label="fragment_repo_details"
+        tools:layout="@layout/fragment_repo_details" >
+        <action
+            android:id="@+id/action_repoDetailsFragment_to_repoListFragment"
+            app:destination="@id/repoListFragment" />
+    </fragment>
+</navigation>
