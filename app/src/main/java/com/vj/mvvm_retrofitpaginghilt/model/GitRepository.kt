@@ -1,4 +1,3 @@
-
 package com.vj.mvvm_retrofitpaginghilt.model
 
 import androidx.paging.Pager
@@ -10,13 +9,13 @@ import javax.inject.Singleton
 
 @Singleton
 class GitRepository @Inject constructor(private val endpoint: GithubEndpoint) {
-    suspend fun callUserData() = Pager(
+    fun callUserData(query: String) = Pager(
         config = PagingConfig(
             pageSize = 10,
             maxSize = 60,
             enablePlaceholders = false
         ),
-        pagingSourceFactory = {RepoPagingSource(endpoint)}
+        pagingSourceFactory = { RepoPagingSource(endpoint, query) }
     ).liveData
 
     suspend fun callUserDetailsData(userName: String) = endpoint.requestUserDetailsData(userName)

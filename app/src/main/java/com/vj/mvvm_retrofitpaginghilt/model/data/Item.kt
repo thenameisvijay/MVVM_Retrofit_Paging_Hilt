@@ -1,8 +1,6 @@
 package com.vj.mvvm_retrofitpaginghilt.model.data
 
 data class Item(
-    val archive_url: String,
-    val archived: Boolean,
     val created_at: String,
     val default_branch: String,
     val description: String,

@@ -14,15 +14,13 @@ import com.vj.mvvm_retrofitpaginghilt.model.data.Item
 class RepoPagingAdapter(private val repoItemClickListener: RepoItemClickListener) :
     PagingDataAdapter<Item, RepoPagingAdapter.DataViewHolder>(RepoComparator) {
 
-    private val gitUsers: ArrayList<Item> = arrayListOf()
-
     inner class DataViewHolder(itemView: LayoutItemBinding) :
         RecyclerView.ViewHolder(itemView.root) {
         var layoutItemBinding: LayoutItemBinding = itemView
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        holder.layoutItemBinding.repoList = gitUsers[position]
+        holder.layoutItemBinding.repoList = getItem(position)
         holder.layoutItemBinding.repoItemClickListener = repoItemClickListener
         holder.layoutItemBinding.executePendingBindings()
     }
@@ -35,14 +33,6 @@ class RepoPagingAdapter(private val repoItemClickListener: RepoItemClickListener
                 false
             )
         )
-
-//    fun addGitUsers(gitUsers: LiveData<PagingData<Item>>) {
-//        this.gitUsers.apply {
-//            clear()
-//            addAll(gitUsers.)
-//        }
-//    }
-
 
     interface RepoItemClickListener {
         fun onRepoItemClicked(name: String, avatar: String)

@@ -1,23 +1,20 @@
 package com.vj.mvvm_retrofitpaginghilt.view
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
-import androidx.paging.PagingData
+import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vj.mvvm_retrofitpaginghilt.databinding.FragmentRepoListBinding
 import com.vj.mvvm_retrofitpaginghilt.helper.NetworkHelper
-import com.vj.mvvm_retrofitpaginghilt.model.data.Item
-import com.vj.mvvm_retrofitpaginghilt.network.Status
 import com.vj.mvvm_retrofitpaginghilt.viewmodel.RepoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -56,36 +53,30 @@ class RepoListFragment : Fragment(), RepoPagingAdapter.RepoItemClickListener {
                 )
             )
             adapter = mAdapter.withLoadStateHeaderAndFooter(
-                header = RepoLoadStateAdapter{mAdapter.retry()},
-                footer = RepoLoadStateAdapter{mAdapter.retry()}
+                header = RepoLoadStateAdapter { mAdapter.retry() },
+                footer = RepoLoadStateAdapter { mAdapter.retry() }
             )
         }
     }
 
     private fun setupObservers() {
         if (NetworkHelper.hasInternet(requireContext())) {
-            repoViewModel.getRepoList().observe(viewLifecycleOwner, {
-                it?.let { resource ->
-                    when (resource.status) {
-                        Status.SUCCESS -> {
-                            mRecyclerView.visibility = View.VISIBLE
-                            mProgress.visibility = View.GONE
-                            resource.data?.let { gitUsers ->
-                                setToAdapter(gitUsers)
-                            }
-                        }
-                        Status.ERROR -> {
-                            mRecyclerView.visibility = View.VISIBLE
-                            mProgress.visibility = View.GONE
-                            Log.e("ERROR", "error msg: " + it.message)
-                        }
-                        Status.LOADING -> {
-                            mProgress.visibility = View.VISIBLE
-                            mRecyclerView.visibility = View.GONE
-                        }
+            repoViewModel.repoList.observe(viewLifecycleOwner) {
+                mAdapter.submitData(viewLifecycleOwner.lifecycle, it)
+            }
+
+            mAdapter.addLoadStateListener { loadState ->
+                binding.apply {
+                    mProgress.isVisible = loadState.source.refresh is LoadState.Loading
+                    mRecyclerView.isVisible = loadState.source.refresh is LoadState.NotLoading
+                    if (loadState.source.refresh is LoadState.NotLoading &&
+                        loadState.append.endOfPaginationReached &&
+                        mAdapter.itemCount < 1
+                    ) {
+                        mRecyclerView.isVisible = false
                     }
                 }
-            })
+            }
         } else {
             mProgress.visibility = View.GONE
             mRecyclerView.visibility = View.GONE
@@ -93,21 +84,13 @@ class RepoListFragment : Fragment(), RepoPagingAdapter.RepoItemClickListener {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun setToAdapter(gitUsers: LiveData<PagingData<Item>>) {
-        mAdapter.apply {
-            addGitUsers(gitUsers)
-            notifyDataSetChanged()
-        }
-    }
-
-
     override fun onDestroy() {
         super.onDestroy()
         fragmentRepoListBinding = null
     }
 
     override fun onRepoItemClicked(name: String, avatar: String) {
-
+        val action = RepoListFragmentDirections.actionRepoListFragmentToRepoDetailsFragment(name, avatar)
+        findNavController().navigate(action)
     }
 }

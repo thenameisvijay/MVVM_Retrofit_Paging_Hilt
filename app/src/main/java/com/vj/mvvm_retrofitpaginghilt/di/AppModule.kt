@@ -2,7 +2,6 @@ package com.vj.mvvm_retrofitpaginghilt.di
 
 import com.squareup.moshi.Moshi
 import com.vj.mvvm_retrofitpaginghilt.BuildConfig
-import com.vj.mvvm_retrofitpaginghilt.helper.ArrayListMoshiAdapter
 import com.vj.mvvm_retrofitpaginghilt.network.GithubEndpoint
 import dagger.Module
 import dagger.Provides
@@ -46,7 +45,6 @@ object AppModule {
                 MoshiConverterFactory.create(
                 Moshi
                     .Builder()
-                    .add(ArrayListMoshiAdapter())
                     .build()
             )).build()
         }.create(GithubEndpoint::class.java)

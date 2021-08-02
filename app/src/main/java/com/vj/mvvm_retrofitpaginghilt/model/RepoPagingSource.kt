@@ -9,20 +9,19 @@ import java.io.IOException
 
 private const val STARTING_PAGE_INDEX = 1
 
-class RepoPagingSource(private val githubEndpoint: GithubEndpoint) :
+class RepoPagingSource(private val githubEndpoint: GithubEndpoint, private val query: String) :
     PagingSource<Int, Item>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Item> {
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = githubEndpoint.requestRepoData(position, params.loadSize)
+            val response = githubEndpoint.requestRepoData(query, position, params.loadSize)
             LoadResult.Page(
-                data = response,
+                data = response.items,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if (response.isEmpty()) null else position + 1
+                nextKey = if (response.items.isEmpty()) null else position + 1
             )
-
         } catch (exception: IOException) {
             LoadResult.Error(exception)
         } catch (exception: HttpException) {

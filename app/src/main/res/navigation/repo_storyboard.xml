@@ -19,6 +19,15 @@
         android:name="com.vj.mvvm_retrofitpaginghilt.view.RepoDetailsFragment"
         android:label="fragment_repo_details"
         tools:layout="@layout/fragment_repo_details" >
+
+        <argument
+            android:name="userArgValue"
+            app:argType="string" />
+
+        <argument
+            android:name="userAvatarArgValue"
+            app:argType="string" />
+
         <action
             android:id="@+id/action_repoDetailsFragment_to_repoListFragment"
             app:destination="@id/repoListFragment" />
