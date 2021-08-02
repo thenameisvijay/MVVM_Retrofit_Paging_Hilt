@@ -2,7 +2,6 @@ package com.vj.mvvm_retrofitpaginghilt.helper
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
-import com.vj.mvvm_retrofitpaginghilt.model.RepoResponse
 
 //No need to use this class if we are using Gson convertor
 class ArrayListMoshiAdapter {
