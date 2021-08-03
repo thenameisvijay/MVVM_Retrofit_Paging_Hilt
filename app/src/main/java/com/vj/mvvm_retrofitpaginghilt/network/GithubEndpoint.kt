@@ -11,7 +11,7 @@ interface GithubEndpoint {
     @GET(BuildConfig.SUB_URL_HEAD)
     suspend fun requestRepoData(
         @Query("q") query: String,
-        @Query("position") position: Int,
+        @Query("page") page: Int,
         @Query("per_page") loadSize: Int
     ): RepoResponse
 

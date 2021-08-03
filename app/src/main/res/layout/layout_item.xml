@@ -18,7 +18,7 @@
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
-        android:onClick="@{()->repoItemClickListener.onRepoItemClicked(repoList.name, repoList.owner.avatar_url)}"
+        android:onClick="@{()->repoItemClickListener.onRepoItemClicked(repoList.owner.login, repoList.owner.avatar_url)}"
         app:cardCornerRadius="@dimen/cardview_default_radius"
         app:cardElevation="@dimen/cardview_default_elevation">
 
@@ -44,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
-                android:text="@{repoList.name}"
+                android:text="@{repoList.owner.login}"
                 android:textSize="20sp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

@@ -3,18 +3,17 @@ package com.vj.mvvm_retrofitpaginghilt.view
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.vj.mvvm_retrofitpaginghilt.R
 import com.vj.mvvm_retrofitpaginghilt.databinding.FragmentRepoDetailsBinding
 import com.vj.mvvm_retrofitpaginghilt.helper.loadImage
 import com.vj.mvvm_retrofitpaginghilt.model.data.UserLabelValue
@@ -42,7 +41,8 @@ class RepoDetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         fragmentRepoDetailsBinding = FragmentRepoDetailsBinding.inflate(inflater, container, false)
         setupUI()
-        gotoDetailsDetails(userDetails.userArgValue)
+        Log.e("getDetailsDetails", "onCreateView: "+ userDetails.userArgValue)
+        getDetailsDetails(userDetails.userArgValue)
         return binding.root
     }
 
@@ -62,7 +62,7 @@ class RepoDetailsFragment : Fragment() {
         mRecyclerView.adapter = mAdapter
     }
 
-    private fun gotoDetailsDetails(loginName: String) {
+    private fun getDetailsDetails(loginName: String) {
         repoViewModel.getUserDetails(loginName).observe(viewLifecycleOwner, {
             it?.let { resource ->
                 when (resource.status) {
@@ -71,11 +71,11 @@ class RepoDetailsFragment : Fragment() {
                         mProgress.visibility = View.GONE
                         resource.data?.let { gitUsers ->
                             val userDetailsList: ArrayList<UserLabelValue> = arrayListOf()
-                            userDetailsList.add(UserLabelValue("Name: ", gitUsers.name))
-                            userDetailsList.add(UserLabelValue("Followers: ", gitUsers.followers.toString()))
-                            userDetailsList.add(UserLabelValue("Following: ", gitUsers.following.toString()))
-                            userDetailsList.add(UserLabelValue("Company: ", gitUsers.company))
-                            userDetailsList.add(UserLabelValue("Location: ", gitUsers.location))
+                            userDetailsList.add(UserLabelValue("Name: ", gitUsers.name ?: "-"))
+                            userDetailsList.add(UserLabelValue("Followers: ", gitUsers.followers.toString() ?: "-"))
+                            userDetailsList.add(UserLabelValue("Following: ", gitUsers.following.toString() ?: "-"))
+                            userDetailsList.add(UserLabelValue("Company: ", gitUsers.company ?: "-"))
+                            userDetailsList.add(UserLabelValue("Location: ", gitUsers.location ?: "-"))
                             setToAdapter(userDetailsList)
                         }
                     }
