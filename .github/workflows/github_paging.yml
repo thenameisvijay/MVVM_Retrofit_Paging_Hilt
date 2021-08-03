@@ -24,10 +24,10 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
-         uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: Grant execute permission for gradlew
-         run: chmod +x gradlew
+        run: chmod +x gradlew
 
        - name: Check Lint
          run: sudo ./gradlew lintDebug
