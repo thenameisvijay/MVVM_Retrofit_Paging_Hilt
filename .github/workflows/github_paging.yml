@@ -29,8 +29,8 @@ jobs:
       - name: Check Lint
         run: sudo ./gradlew lintDebug
 
-      - name: Run tests
-        run: sudo ./gradlew test
+#      - name: Run tests
+#        run: sudo ./gradlew test
 
       - name: Build with Gradle
         run: sudo ./gradlew build
