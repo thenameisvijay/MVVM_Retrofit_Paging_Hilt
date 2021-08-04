@@ -85,4 +85,8 @@ dependencies {
 
     // Paging 3
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    //testing
+    testImplementation 'junit:junit:4.13.2'
+
 }
